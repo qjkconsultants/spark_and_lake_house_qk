@@ -27,7 +27,7 @@ DEFAULT_DATA_QUALITY_RULESET = """
 """
 
 # Script generated for node Amazon S3
-AmazonS3_node1757128664531 = glueContext.create_dynamic_frame.from_catalog(database="stedi", table_name="accelorometer_landing", transformation_ctx="AmazonS3_node1757128664531")
+AmazonS3_node1757128664531 = glueContext.create_dynamic_frame.from_catalog(database="stedi", table_name="accelerometer_landing", transformation_ctx="AmazonS3_node1757128664531")
 
 # Script generated for node Amazon S3
 AmazonS3_node1757128643733 = glueContext.create_dynamic_frame.from_options(format_options={"multiLine": "false"}, connection_type="s3", format="json", connection_options={"paths": ["s3://stedi-lake-house-qk/customer/trusted/"], "recurse": True}, transformation_ctx="AmazonS3_node1757128643733")
@@ -36,11 +36,10 @@ AmazonS3_node1757128643733 = glueContext.create_dynamic_frame.from_options(forma
 CustomerPrivacyFilter_node1757128680082 = Join.apply(frame1=AmazonS3_node1757128664531, frame2=AmazonS3_node1757128643733, keys1=["user"], keys2=["email"], transformation_ctx="CustomerPrivacyFilter_node1757128680082")
 
 # Script generated for node SQL Query
-SqlQuery914 = '''
+SqlQuery1077 = '''
 select user, x, y, z, timestamp from myDataSource
-
 '''
-SQLQuery_node1757135173003 = sparkSqlQuery(glueContext, query = SqlQuery914, mapping = {"myDataSource":CustomerPrivacyFilter_node1757128680082}, transformation_ctx = "SQLQuery_node1757135173003")
+SQLQuery_node1757135173003 = sparkSqlQuery(glueContext, query = SqlQuery1077, mapping = {"myDataSource":CustomerPrivacyFilter_node1757128680082}, transformation_ctx = "SQLQuery_node1757135173003")
 
 # Script generated for node Accelerometer Trusted
 EvaluateDataQuality().process_rows(frame=SQLQuery_node1757135173003, ruleset=DEFAULT_DATA_QUALITY_RULESET, publishing_options={"dataQualityEvaluationContext": "EvaluateDataQuality_node1757128621835", "enableDataQualityResultsPublishing": True}, additional_options={"dataQualityResultsPublishing.strategy": "BEST_EFFORT", "observations.scope": "ALL"})
